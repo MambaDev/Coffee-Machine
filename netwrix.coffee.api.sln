@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netwrix.coffee.api", "netwrix.coffee.api\netwrix.coffee.api.csproj", "{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7854C270-1824-4502-986E-266D01408D90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7854C270-1824-4502-986E-266D01408D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7854C270-1824-4502-986E-266D01408D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7854C270-1824-4502-986E-266D01408D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7854C270-1824-4502-986E-266D01408D90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D68062F0-3800-4689-BFCD-FF356A1C705A}
+	EndGlobalSection
+EndGlobal

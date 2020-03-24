@@ -1,0 +1,142 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace netwrix.coffee.api.Models
+{
+    public class DatabaseContext : DbContext
+    {
+        /// <summary>
+        /// The connection string
+        /// </summary>
+        private readonly string _connectionString;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseContext"/> class.
+        /// </summary>
+        public DatabaseContext() : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseContext"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        public DatabaseContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatabaseContext"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        public DatabaseContext(string connectionString)
+        {
+            this._connectionString = connectionString;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
+        /// <summary>
+        /// <para>
+        /// Override this method to configure the database (and other options) to be used for this context.
+        /// This method is called for each instance of the context that is created.
+        /// The base implementation does nothing.
+        /// </para>
+        /// <para>
+        /// In situations where an instance of <see cref="T:Microsoft.EntityFrameworkCore.DbContextOptions" /> may or may not have been passed
+        /// to the constructor, you can use <see cref="P:Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured" /> to determine if
+        /// the options have already been set, and skip some or all of the logic in
+        /// <see cref="M:Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)" />.
+        /// </para>
+        /// </summary>
+        /// <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions)
+        /// typically define extension methods on this object that allow you to configure the context.</param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!string.IsNullOrWhiteSpace(this._connectionString))
+                optionsBuilder.UseMySql(this._connectionString);
+            else
+                base.OnConfiguring(optionsBuilder);
+        }
+
+        /// <summary>
+        /// Saves all changes made in this context to the database.
+        /// </summary>
+        /// <returns>
+        /// The number of state entries written to the database.
+        /// </returns>
+        /// <remarks>
+        /// This method will automatically call <see cref="M:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.DetectChanges" /> to discover any
+        /// changes to entity instances before saving to the underlying database. This can be disabled via
+        /// <see cref="P:Microsoft.EntityFrameworkCore.ChangeTracking.ChangeTracker.AutoDetectChangesEnabled" />.
+        /// </remarks>
+        public override int SaveChanges()
+        {
+            var added = this.ChangeTracker.Entries<IAuditableModel>().Where(e => e.State == EntityState.Added).ToList();
+
+            added.ForEach(e =>
+            {
+                e.Property(x => x.CreatedDatetime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.ModifiedDateTime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.CreatedDatetime).IsModified = true;
+                e.Property(x => x.ModifiedDateTime).IsModified = true;
+            });
+
+            var modified = this.ChangeTracker.Entries<IAuditableModel>().Where(e => e.State == EntityState.Modified)
+                .ToList();
+
+            modified.ForEach(e =>
+            {
+                e.Property(x => x.ModifiedDateTime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.ModifiedDateTime).IsModified = true;
+
+                e.Property(x => x.CreatedDatetime).CurrentValue = e.Property(x => x.CreatedDatetime).OriginalValue;
+                e.Property(x => x.CreatedDatetime).IsModified = false;
+            });
+
+            return base.SaveChanges();
+        }
+
+        /// <summary>
+        /// Asynchronously saves all changes made in this context to the database. Ensuring that if
+        /// changes are made or items are created to update the given modified and creation date
+        /// time.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous save operation. The task result contains the
+        /// number of state entries written to the database.
+        /// </returns>
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            var added = this.ChangeTracker.Entries<IAuditableModel>().Where(e => e.State == EntityState.Added).ToList();
+
+            added.ForEach(e =>
+            {
+                e.Property(x => x.CreatedDatetime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.ModifiedDateTime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.CreatedDatetime).IsModified = true;
+                e.Property(x => x.ModifiedDateTime).IsModified = true;
+            });
+
+            var modified = this.ChangeTracker.Entries<IAuditableModel>().Where(e => e.State == EntityState.Modified)
+                .ToList();
+
+            modified.ForEach(e =>
+            {
+                e.Property(x => x.ModifiedDateTime).CurrentValue = DateTimeOffset.UtcNow;
+                e.Property(x => x.ModifiedDateTime).IsModified = true;
+
+                e.Property(x => x.CreatedDatetime).CurrentValue = e.Property(x => x.CreatedDatetime).OriginalValue;
+                e.Property(x => x.CreatedDatetime).IsModified = false;
+            });
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+    }
+}
