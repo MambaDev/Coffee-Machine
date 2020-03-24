@@ -46,7 +46,7 @@ namespace netwrix.coffee.api
 
             // since we don't work with many different machines, we can create a singleton for
             // usage. The sub would be created here or during first execution.
-            services.AddSingleton<CoffeeMachineStub>();
+            services.AddSingleton<ICoffeeMachine>(new CoffeeMachineStub());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

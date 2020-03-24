@@ -35,22 +35,11 @@ export default class Endpoint {
 
     if (response.ok) {
       const content = await response.json();
-      return { content, status };
+      return { ...content };
     }
 
-    // if for any reason we did fail the request, lets go and ensure we can get anything from it. If
-    // for any reason we fail to parse the given text to JSON, just default with a simple response.
-
-    try {
-      const text = await response.text();
-      const json = text == null || text === "" ? {} : JSON.parse(text);
-      return Object.assign({ headers: response.headers, status }, json);
-    } catch (error) {
-      return {
-        error: "unknown",
-        description: response.statusText,
-        status: response.status
-      };
-    }
+    const text = await response.text();
+    const json = text == null || text === "" ? {} : JSON.parse(text);
+    throw new Error(Object.assign({ headers: response.headers, status }, json));
   }
 }

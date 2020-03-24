@@ -1,8 +1,16 @@
 ﻿import Api from "./api/index.js";
 
 const state = {
-  online: false,
-  api: null
+  api: null,
+
+  machine: {
+    online: false,
+    status: null
+  },
+  timers: {
+    statusTimer: null,
+    statusTimerTiming: 3000
+  }
 };
 
 /**
@@ -10,9 +18,8 @@ const state = {
  * @param {bool} online Is the given coffee machine online or not?
  */
 function markPageAsOnline(online = false) {
-  debugger;
   const onlineElement = document.getElementById("online-status");
-  onlineElement.innerHTML = online ? "Online!" : "Offline";
+  onlineElement.innerText = online ? "Online" : "Offline";
 
   if (online) {
     onlineElement.classList.add("site-online");
@@ -24,13 +31,26 @@ function markPageAsOnline(online = false) {
 }
 
 /**
+ * Until the api has a form of websocket implemented, the platform will be required to poll status
+ * updates to ensure we are always aware of the current state.
+ */
+function setupStatusUpdateTimer() {
+  state.timers.statusTimer = setInterval(async () => {
+    state.machine.status = await state.api.coffee.status();
+  }, state.timers.statusTimerTiming);
+}
+
+/**
  * Setups the api for use and basic setup.
  */
 async function init() {
-  state.api = new Api("http://localhost:8080/api");
+  state.api = new Api("/api");
 
   const health = await state.api.infrastructure.health();
   markPageAsOnline(health.online);
+
+  state.machine.status = await state.api.coffee.status();
+  setupStatusUpdateTimer();
 }
 
 window.addEventListener("load", init);
