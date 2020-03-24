@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using netwrix.coffee.api.Responses.Coffee;
 using netwrix.coffee.api.Types;
-using System.Collections.Generic;
 
 namespace netwrix.coffee.api.Controllers
 {
@@ -30,9 +29,15 @@ namespace netwrix.coffee.api.Controllers
             this._coffeeMachine = coffeeMachine;
         }
 
+        /// <summary>
+        /// Gets the coffee machine status, which includes all sub components in the device.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("status")]
-        public IActionResult Get()
+        public IActionResult GetCoffeeMachineStatus()
         {
+            this._logger.LogInformation("Gathering the current coffee machines status for requesting user.");
+
             var response = new CoffeeMachineStatusResponse(this._coffeeMachine);
             return this.StatusCode(response.Status, response);
         }
