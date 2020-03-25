@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using coffee.shared.Models;
+﻿using coffee.shared.Models;
 using coffee.shared.Requests.Coffee;
 using coffee.shared.Responses;
 using coffee.shared.Responses.Coffee;
 using coffee.shared.Types;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -102,8 +102,14 @@ namespace coffee.api.Services
             // if we are already off, you should not be able to attempt to turn it off again.
             if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("turn off");
 
+            // if we are making or descaling, we cannot just turn off.
+            if (this._coffeeMachine.IsDescaling || this._coffeeMachine.IsMakingCoffee)
+                return new CoffeeMachineRunningErrorResponse("turn off");
+
             CoffeeMachineStatusResponse statusBeforeTurnOff = this.GetStatus();
+
             await this._coffeeMachine.TurnOffAsync().ConfigureAwait(false);
+            statusBeforeTurnOff.CurrentState = CoffeeStatusState.Off;
 
             return statusBeforeTurnOff;
         }
@@ -115,6 +121,7 @@ namespace coffee.api.Services
         public async Task<BaseResponse> TurnOnSafeAsync()
         {
             if (this._coffeeMachine.IsOn) return new CoffeeMachineOnlineErrorResponse("turn on");
+
             await this._coffeeMachine.TurnOnAsync().ConfigureAwait(false);
 
             return this.GetStatus();
@@ -149,7 +156,7 @@ namespace coffee.api.Services
             };
 
             Task.Run(async () => await this._coffeeMachine.MakeCoffeeAsync(coffeeOptions).ConfigureAwait(false));
-            return new MakeCoffeeResponse(11);
+            return new MakeCoffeeResponse(20);
         }
 
         /// <summary>
@@ -159,14 +166,14 @@ namespace coffee.api.Services
         public BaseResponse DescaleCoffeeMachineSafe()
         {
             // if we are off or already running, stop the execution
-            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
+            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("descale coffee");
             if (this._coffeeMachine.IsMakingCoffee) return new CoffeeMachineMakingCoffeeErrorResponse();
 
             if (this._coffeeMachine.IsDescaling || this._coffeeMachine.DescaleState == State.Okay)
                 return new CoffeeMachineDescalingErrorResponse("descaling");
 
             Task.Run(async () => await this._coffeeMachine.DescaleAsync().ConfigureAwait(false));
-            return new DescalingCoffeeMachineResponse(31);
+            return new DescalingCoffeeMachineResponse(40);
         }
     }
 }

@@ -83,7 +83,7 @@ namespace coffee.shared.Types
         public Task DescaleAsync()
         {
             if (!this.IsOn || this.IsMakingCoffee || this.IsDescaling || this.DescaleState ==
-           State.Alert)
+           State.Okay)
                 throw new InvalidOperationException("Invalid state");
             this.IsDescaling = true;
             // [Descale Machine]
@@ -110,7 +110,7 @@ namespace coffee.shared.Types
         // Randomly create a state for testing. This can be replaced as required.
         private State GetRandomState()
         {
-            return this._randomStateGenerator.Next(1, 10) == 10 ? State.Alert : State.Okay;
+            return this._randomStateGenerator.Next(1, 10) == 9 ? State.Alert : State.Okay;
         }
     }
 }

@@ -1,71 +1,159 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+﻿:root {
+  --coffee: #6f4e37;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin: 0 auto;
+  background: white;
+  font-family: "Varela Round", sans-serif;
+  height: 100%;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
+
+a {
+  color: #bbbbc4;
+  text-decoration: none;
+  -o-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+a:hover {
+  color: var(--coffee);
+}
+
+h1 {
+  color: var(--coffee);
+  padding-bottom: 0px;
+  margin-bottom: 1%;
+}
+
+h2 {
+  color: #555560;
+  font-size: 2rem;
+  font-weight: bold;
   width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+}
+
+h4 {
+  font-size: 2rem;
+  width: 100%;
+}
+
+td {
+  text-align: center;
+}
+
+.offline {
+  color: red;
+}
+
+.online {
+  color: green;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.buffer {
+  margin-top: 25px;
+}
+
+.logo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--coffee);
+}
+
+.footer {
+  padding-top: 5rem;
+}
+
+.footer p {
+  color: white;
+  font-size: 1.2rem;
+}
+
+span.new {
+  background-color: var(--coffee);
+  font-weight: 700;
+  padding: 0.2rem;
+  margin-left: 0.4rem;
+}
+
+button {
+  max-width: 150px;
+  min-width: 150px;
+  margin: 5px;
+}
+
+.status {
+  display: inline-flex;
+}
+
+.state-table {
+  margin: 0 auto 25px auto;
+}
+
+.container {
+  text-align: center;
+}
+
+#online-status {
+  margin-left: 10px;
+}
+
+.line {
+  margin: 25px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+input[type="button"]:disabled,
+button:disabled {
+  background-color: lightgray;
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+label {
+  font-weight: 400;
+}
+
+th,
+td {
+  padding: 5px 5px;
+  line-height: normal;
+  font-size: 0.85em;
+}
+
+/* Mobile first queries */
+
+/* Larger than mobile */
+
+@media (min-width: 400px) {
+}
+
+/* Larger than phablet */
+
+@media (min-width: 550px) {
+}
+
+/* Larger than tablet */
+
+@media (min-width: 750px) {
+}
+
+/* Larger than desktop */
+
+@media (min-width: 1000px) {
+}
+
+/* Larger than Desktop HD */
+
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 4rem;
+  }
 }

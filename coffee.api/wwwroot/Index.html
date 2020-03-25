@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    />
+    <link rel="stylesheet" href="/css/site.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row top">
+        <div class="row">
+          <div class="logo">☕</div>
+          <h1>Coffee Machine</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="two column"></div>
+        <div class="nine columns"></div>
+      </div>
+
+      <div class="row status">
+        <h2>Status:</h2>
+        <h4 id="online-status" class="offline">Off</h4>
+      </div>
+
+      <div class="row">
+        <table class="state-table">
+          <thead>
+            <tr>
+              <th>Water Level</th>
+              <th>Water Tray</th>
+              <th>Bean Feed</th>
+              <th>Waste Coffee</th>
+              <th>Descale Machine</th>
+            </tr>
+          </thead>
+          <tbody id="machine-status" class="online">
+            <tr>
+              <td>☕</td>
+              <td>☕</td>
+              <td>☕</td>
+              <td>☕</td>
+              <td>☕</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="row">
+        <div class="one-third column">
+          <button id="button-on-off" class="button">
+            On/Off
+          </button>
+        </div>
+        <div class="one-third column">
+          <button id="button-descale" class="button">
+            Descale
+          </button>
+        </div>
+        <div class="one-third column">
+          <button id="button-increase-water" class="button">
+            Add Water
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-third column">
+          <button id="button-empty-water" class="button">
+            Empty Water
+          </button>
+        </div>
+        <div class="one-third column">
+          <button id="button-feed-beans" class="button">
+            Feed Beans
+          </button>
+        </div>
+        <div class="one-third column">
+          <button id="button-empty-waste" class="button">
+            Empty Waste
+          </button>
+        </div>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="row">
+        <label>Number Of Espresso Shots</label>
+        <input class="" type="number" value="0" min="0" id="coffee-shots" />
+      </div>
+      <label>
+        <input id="check-milk" type="checkbox" checked />
+        <span class="label-body">Add Milk</span>
+      </label>
+      <input
+        class="button"
+        type="button"
+        id="button-make"
+        value="Make Coffee"
+      />
+
+      <div class="line"></div>
+
+      <footer class="footer">
+        <p><a href="http://getskeleton.com/">Skeleton.css</a></p>
+      </footer>
+    </div>
+
+    <script src="/js/api/index.js" type="module"></script>
+    <script src="/js/site.js"></script>
+  </body>
+</html>

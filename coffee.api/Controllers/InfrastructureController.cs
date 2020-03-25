@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using coffee.shared.Responses.Infrastructure;
+﻿using coffee.shared.Responses.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 
 namespace coffee.api.Controllers
 {

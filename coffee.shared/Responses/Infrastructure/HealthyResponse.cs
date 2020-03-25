@@ -7,7 +7,7 @@ namespace coffee.shared.Responses.Infrastructure
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="HealthyResponse"/> is online.
         /// </summary>
-       [JsonProperty("online")]
+        [JsonProperty("online")]
         public bool Online { get; set; }
 
         /// <summary>

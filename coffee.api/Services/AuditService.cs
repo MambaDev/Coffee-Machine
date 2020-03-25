@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using coffee.shared.Models;
+﻿using coffee.shared.Models;
 using coffee.shared.Responses;
-using System;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace coffee.api.Services
@@ -15,7 +14,7 @@ namespace coffee.api.Services
         /// <param name="response">The response.</param>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        Task AddAuditEntryForRequest(HttpRequest request, BaseResponse response,  AuditActionType type);
+        Task AddAuditEntryForRequest(HttpRequest request, BaseResponse response, AuditActionType type);
     }
 
     public class AuditService : IAuditService
@@ -33,7 +32,7 @@ namespace coffee.api.Services
         /// <inheritdoc/>
         public async Task AddAuditEntryForRequest(HttpRequest request, BaseResponse response, AuditActionType type)
         {
-           await this._databaseContext.AuditingActions.AddAsync(new AuditingActions
+            await this._databaseContext.AuditingActions.AddAsync(new AuditingActions
             {
                 Result = response.Ok() ? AuditActionResult.Passed : AuditActionResult.Failed,
                 Source = request.HttpContext.Connection.RemoteIpAddress.ToString(),

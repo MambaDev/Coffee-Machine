@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace coffee.shared.Requests.Coffee
 {
@@ -11,8 +10,7 @@ namespace coffee.shared.Requests.Coffee
         /// <summary>
         /// Gets or sets the number of espresso shots in the coffee
         /// </summary>
-        [Range(0, 10)]
-       [JsonProperty("number_espresso_shots")]
+        [JsonProperty("number_espresso_shots")]
         public int NumberOfEspressoShots { get; set; }
 
         /// <summary>

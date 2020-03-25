@@ -27,8 +27,9 @@ export default class Endpoint {
    */
   async apiCall({ path, body, method }) {
     const response = await fetch(`${this.apiUrl}/${path}`, {
-      method: method,
-      body: Endpoint.getBodyContent(method, body)
+      headers: { "Content-Type": "application/json" },
+      body: Endpoint.getBodyContent(method, body),
+      method: method
     });
 
     const { status } = response;

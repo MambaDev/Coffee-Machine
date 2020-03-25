@@ -85,7 +85,7 @@ namespace coffee.shared.Responses.Coffee
             this.IsDescaling = coffeeMachine.IsDescaling;
             this.WaterLevelState = coffeeMachine.WaterLevelState;
             this.BeanFeedState = coffeeMachine.BeanFeedState;
-            this.WasteCoffeeState = coffeeMachine.WaterLevelState;
+            this.WasteCoffeeState = coffeeMachine.WasteCoffeeState;
             this.WaterTrayState = coffeeMachine.WaterTrayState;
             this.DescaleState = coffeeMachine.DescaleState;
 
@@ -98,9 +98,12 @@ namespace coffee.shared.Responses.Coffee
                 this.DescaleState
             }.Any(e => e == State.Alert);
 
-            if (this.IsOn) this.CurrentState = CoffeeStatusState.Idle;
+            if (!this.IsOn) return;
+
+            this.CurrentState = CoffeeStatusState.Idle;
+
             if (this.IsMakingCoffee || this.IsDescaling) this.CurrentState = CoffeeStatusState.Active;
-            if (this.IsAlerting) this.CurrentState = CoffeeStatusState.Active;
+            if (this.IsAlerting) this.CurrentState = CoffeeStatusState.Alert;
         }
     }
 }

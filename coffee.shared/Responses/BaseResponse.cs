@@ -9,12 +9,12 @@ namespace coffee.shared.Responses
         /// Gets or sets the message of the base request
         /// </summary>
         [JsonProperty("message", NullValueHandling = NullValueHandling.Ignore)]
-        public string Message { get;  protected set; }
+        public string Message { get; protected set; }
 
         /// <summary>
         /// Gets or sets the status of the base request.
         /// </summary>
-       [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("status", NullValueHandling = NullValueHandling.Ignore)]
         public int Status { get; protected set; }
 
         /// <summary>
@@ -29,6 +29,9 @@ namespace coffee.shared.Responses
         /// <summary>
         /// If the given response is a good response or not.
         /// </summary>
-        public bool Ok() => this.Status >= 200 && this.Status <= 299;
+        public bool Ok()
+        {
+            return this.Status >= 200 && this.Status <= 299;
+        }
     }
 }

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using coffee.api.Services;
+﻿using coffee.api.Services;
 using coffee.shared.Models;
 using coffee.shared.Requests.Coffee;
 using coffee.shared.Responses;
 using coffee.shared.Responses.Coffee;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace coffee.api.Controllers
@@ -59,7 +59,8 @@ namespace coffee.api.Controllers
         /// Turns the off coffee machine asynchronous.
         /// </summary>
         /// <response code="200">returns the given coffee machines state before it was turned off</response>
-        /// <response code="409">the machine was already turned on while attempting to turn it on.</response>
+        /// <response code="409">the machine was already turned off while attempting to turn it off.</response>
+        /// <response code="409">the machine was in a state that cannot allow turning off, e.g making coffee or descaling.</response>
         [HttpDelete("status/online")]
         public async Task<IActionResult> TurnOffCoffeeMachineAsync()
         {

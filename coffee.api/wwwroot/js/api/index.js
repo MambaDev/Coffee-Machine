@@ -13,3 +13,8 @@ export default class Api {
     this.coffee = new Coffee(this.apiUri, "coffee");
   }
 }
+
+window.api = new Api("/api");
+
+const apiReadyEvent = new CustomEvent('api-ready');
+document.dispatchEvent(apiReadyEvent);
