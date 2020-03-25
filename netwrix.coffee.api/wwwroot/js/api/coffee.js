@@ -24,4 +24,18 @@ export default class Coffee extends Endpoint {
       method: "post"
     });
   }
+
+  /**
+   * Starts the making coffee process with number of espresso shots and if we are adding milk.
+   * @param {number} numberOfShots The number of shots to add.
+   * @param {*} addMilk If we are adding milk or not.
+   */
+  async makeCoffee(numberOfShots = 0, addMilk = true) {
+    const body = {
+      number_espresso_shots: numberOfShots,
+      add_milk: addMilk
+    };
+
+    return this.apiCall({ path: `${this.path}/make`, method: "post", body });
+  }
 }
