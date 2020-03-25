@@ -130,16 +130,6 @@ namespace netwrix.coffee.api.Services
         }
 
         /// <summary>
-        /// Descales the coffe machine safe by ensuring the correct state and context to start making coffee.
-        /// </summary>
-        /// <inheritdoc/>
-        public BaseResponse DescaleCoffeeMachineSafe()
-        {
-            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
         /// Makes the coffee safe by ensuring the correct state and context to start making coffee.
         /// </summary>
         /// <inheritdoc/>
@@ -160,6 +150,23 @@ namespace netwrix.coffee.api.Services
 
             Task.Run(async () => await this._coffeeMachine.MakeCoffeeAsync(coffeeOptions).ConfigureAwait(false));
             return new MakeCoffeeResponse(11);
+        }
+
+        /// <summary>
+        /// Descales the coffe machine safe by ensuring the correct state and context to start making coffee.
+        /// </summary>
+        /// <inheritdoc/>
+        public BaseResponse DescaleCoffeeMachineSafe()
+        {
+            // if we are off or already running, stop the execution
+            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
+            if (this._coffeeMachine.IsMakingCoffee) return new CoffeeMachineMakingCoffeeErrorResponse();
+
+            if (this._coffeeMachine.IsDescaling || this._coffeeMachine.DescaleState == State.Okay)
+                return new CoffeeMachineDescalingErrorResponse("descaling");
+
+            Task.Run(async () => await this._coffeeMachine.DescaleAsync().ConfigureAwait(false));
+            return new DescalingCoffeeMachineResponse(31);
         }
     }
 }

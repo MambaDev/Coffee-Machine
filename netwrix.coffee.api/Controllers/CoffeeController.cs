@@ -82,16 +82,32 @@ namespace netwrix.coffee.api.Controllers
         /// </summary>
         /// <response code="201">Returns a simple okay when the making coffee has started.</response>
         /// <response code="409">The machine was already started making coffee.</response>
-        /// <response code="409">The machine is off and cannot currently start making coffee.</response>
+        /// <response code="409">The machine is off and cannot currently start making coffee or already making coffee.</response>
         /// <response code="409">The machine is in alert state and cannot perform any action.</response>
-        /// <response code="409">The machine is already making coffee and thus cannot make two at the same time.</response>
         [HttpPost("make")]
-        public IActionResult MakeCoffeeRequest([FromBody] MakeCoffeeRequest request)
+        public IActionResult StartMakingCoffee([FromBody] MakeCoffeeRequest request)
         {
             this._logger.LogInformation("Attempting to start making coffee with the machine.");
 
             BaseResponse response = this._coffeeMachineService.MakeCoffeeSafe(request);
             return this.StatusCode(response.Status, response);
         }
+
+        /// <summary>
+        /// Start the process of descaling coffee for the user.
+        /// </summary>
+        /// <response code="200">Returns a simple okay when the scaling has started.</response>
+        /// <response code="409">The machine was already started descaling or not ready for descaling.</response>
+        /// <response code="409">The machine is off and cannot start descaling.</response>
+        [HttpPost("descale")]
+        public IActionResult StartDescalingCoffeeMachine()
+        {
+            this._logger.LogInformation("Attempting to start making coffee with the machine.");
+
+            BaseResponse response = this._coffeeMachineService.DescaleCoffeeMachineSafe();
+            return this.StatusCode(response.Status, response);
+        }
+
+
     }
 }
