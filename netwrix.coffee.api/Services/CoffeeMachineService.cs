@@ -145,7 +145,11 @@ namespace netwrix.coffee.api.Services
         /// <inheritdoc/>
         public BaseResponse MakeCoffeeSafe(MakeCoffeeRequest makeCoffeeRequest)
         {
+            // if we are off or already running, stop the execution
             if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
+            if (this._coffeeMachine.IsMakingCoffee) return new CoffeeMachineMakingCoffeeErrorResponse();
+
+            // if we are alerting, you cannot start making coffee, only turn off or descale.
             if (this.IsCurrentlyAlerting()) return new CoffeeMachineAlertingErrorResponse("make coffee");
 
             var coffeeOptions = new CoffeeCreationOptions
