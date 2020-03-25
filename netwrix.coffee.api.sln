@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netwrix.coffee.api", "netwrix.coffee.api\netwrix.coffee.api.csproj", "{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netwrix.coffee.shared", "..\netwrix.coffee.shared\netwrix.coffee.shared.csproj", "{3B5384B6-861C-4B09-902F-F07E37F8F208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "netwrix.coffee.shared", "netwrix.coffee.shared\netwrix.coffee.shared.csproj", "{A016F300-C1C6-4977-B034-23A974B7F604}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEDBC269-C75D-49D4-A26F-CE5DE7E0EB67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B5384B6-861C-4B09-902F-F07E37F8F208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B5384B6-861C-4B09-902F-F07E37F8F208}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B5384B6-861C-4B09-902F-F07E37F8F208}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B5384B6-861C-4B09-902F-F07E37F8F208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A016F300-C1C6-4977-B034-23A974B7F604}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A016F300-C1C6-4977-B034-23A974B7F604}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A016F300-C1C6-4977-B034-23A974B7F604}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A016F300-C1C6-4977-B034-23A974B7F604}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

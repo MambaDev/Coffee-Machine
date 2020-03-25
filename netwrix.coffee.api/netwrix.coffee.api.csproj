@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\netwrix.coffee.shared\netwrix.coffee.shared.csproj" />
+    <ProjectReference Include="..\netwrix.coffee.shared\netwrix.coffee.shared.csproj" />
   </ItemGroup>
 
 </Project>

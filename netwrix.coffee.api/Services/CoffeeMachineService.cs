@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using netwrix.coffee.api.Models;
+using netwrix.coffee.shared.Requests.Coffee;
 using netwrix.coffee.shared.Responses;
 using netwrix.coffee.shared.Responses.Coffee;
 using netwrix.coffee.shared.Types;
@@ -37,13 +38,13 @@ namespace netwrix.coffee.api.Services
         /// Makes the coffee safe by ensuring the correct state and context to start making coffee.
         /// </summary>
         /// <remarks>If the machine is not in a good state, the action will not take place.</remarks>
-        Task<BaseResponse> MakeCoffeeSafeAsync();
+        BaseResponse MakeCoffeeSafe(MakeCoffeeRequest request);
 
         /// <summary>
         /// Descales the coffe machine safe by ensuring the correct state and context to start making coffee.
         /// </summary>
         /// <remarks>If the machine is not in a good state, the action will not take place.</remarks>
-        Task<BaseResponse> DescaleCoffeeMachineSafeAsync();
+        BaseResponse DescaleCoffeeMachineSafe();
     }
 
     public class CoffeeMachineService : ICoffeeMachineService
@@ -132,8 +133,9 @@ namespace netwrix.coffee.api.Services
         /// Descales the coffe machine safe by ensuring the correct state and context to start making coffee.
         /// </summary>
         /// <inheritdoc/>
-        public Task<BaseResponse> DescaleCoffeeMachineSafeAsync()
+        public BaseResponse DescaleCoffeeMachineSafe()
         {
+            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
             throw new System.NotImplementedException();
         }
 
@@ -141,9 +143,19 @@ namespace netwrix.coffee.api.Services
         /// Makes the coffee safe by ensuring the correct state and context to start making coffee.
         /// </summary>
         /// <inheritdoc/>
-       public Task<BaseResponse> MakeCoffeeSafeAsync()
+        public BaseResponse MakeCoffeeSafe(MakeCoffeeRequest makeCoffeeRequest)
         {
-            throw new System.NotImplementedException();
+            if (!this._coffeeMachine.IsOn) return new CoffeeMachineOfflineErrorResponse("make coffee");
+            if (this.IsCurrentlyAlerting()) return new CoffeeMachineAlertingErrorResponse("make coffee");
+
+            var coffeeOptions = new CoffeeCreationOptions
+            {
+                AddMilk = makeCoffeeRequest.AddMilk,
+                NumEspressoShots = makeCoffeeRequest.NumberOfEspressoShots
+            };
+
+            Task.Run(async () => await this._coffeeMachine.MakeCoffeeAsync(coffeeOptions).ConfigureAwait(false));
+            return new MakeCoffeeResponse(11);
         }
     }
 }
