@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using netwrix.coffee.api.Models;
+using netwrix.coffee.shared.Models;
 using netwrix.coffee.shared.Requests.Coffee;
 using netwrix.coffee.shared.Responses;
 using netwrix.coffee.shared.Responses.Coffee;

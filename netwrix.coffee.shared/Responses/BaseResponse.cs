@@ -25,5 +25,10 @@ namespace netwrix.coffee.shared.Responses
         {
             this.Status = statusCode;
         }
+
+        /// <summary>
+        /// If the given response is a good response or not.
+        /// </summary>
+        public bool Ok() => this.Status >= 200 && this.Status <= 299;
     }
 }

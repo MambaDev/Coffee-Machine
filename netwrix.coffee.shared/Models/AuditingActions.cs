@@ -11,6 +11,7 @@ namespace netwrix.coffee.shared.Models
         TurnOnMachine = 2,
         DescaleMachine = 3,
         MakeCoffee = 4,
+        GetMachineState = 5,
     }
 
     public enum AuditActionResult
@@ -35,9 +36,11 @@ namespace netwrix.coffee.shared.Models
         /// <summary>
         /// Gets or sets the source (the ip address of the source that triggered the action)
         /// </summary>
+        /// <remarks>Ensure to have a max length of 40 characters for support of IPv6 addresses.</remarks>
         [Required]
         [JsonProperty("source")]
         [Column("source")]
+        [MaxLength(40)]
         public string Source { get; set; }
 
         /// <summary>

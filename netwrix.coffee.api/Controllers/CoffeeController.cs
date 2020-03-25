@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using netwrix.coffee.api.Services;
+using netwrix.coffee.shared.Models;
 using netwrix.coffee.shared.Requests.Coffee;
 using netwrix.coffee.shared.Responses;
 using netwrix.coffee.shared.Responses.Coffee;
@@ -23,13 +24,19 @@ namespace netwrix.coffee.api.Controllers
         private readonly ICoffeeMachineService _coffeeMachineService;
 
         /// <summary>
+        /// The database context
+        /// </summary>
+        private readonly IAuditService _auditService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CoffeeController"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public CoffeeController(ILogger<CoffeeController> logger, ICoffeeMachineService coffeeMachineService)
+        public CoffeeController(ILogger<CoffeeController> logger, IAuditService auditService, ICoffeeMachineService coffeeMachineService)
         {
             this._logger = logger;
             this._coffeeMachineService = coffeeMachineService;
+            this._auditService = auditService;
         }
 
         /// <summary>
@@ -37,10 +44,13 @@ namespace netwrix.coffee.api.Controllers
         /// </summary>
         /// <response code="200">returns the given coffee machines state and component states.</response>
         [HttpGet("status")]
-        public IActionResult GetCoffeeMachineStatus()
+        public async Task<IActionResult> GetCoffeeMachineStatusAsync()
         {
             this._logger.LogInformation("Gathering the current coffee machines status for requesting user.");
             CoffeeMachineStatusResponse response = this._coffeeMachineService.GetStatus();
+
+            await this._auditService.AddAuditEntryForRequest(this.Request, response,
+                AuditActionType.GetMachineState).ConfigureAwait(false);
 
             return this.StatusCode(response.Status, response);
         }
@@ -58,6 +68,9 @@ namespace netwrix.coffee.api.Controllers
             BaseResponse response = await this._coffeeMachineService
                     .TurnOffSafeAsync().ConfigureAwait(false);
 
+            await this._auditService.AddAuditEntryForRequest(this.Request, response,
+                AuditActionType.TurnOffMachine).ConfigureAwait(false);
+
             return this.StatusCode(response.Status, response);
         }
 
@@ -74,6 +87,9 @@ namespace netwrix.coffee.api.Controllers
             BaseResponse response = await this._coffeeMachineService
                 .TurnOnSafeAsync().ConfigureAwait(false);
 
+            await this._auditService.AddAuditEntryForRequest(this.Request, response,
+                AuditActionType.TurnOnMachine).ConfigureAwait(false);
+
             return this.StatusCode(response.Status, response);
         }
 
@@ -85,11 +101,14 @@ namespace netwrix.coffee.api.Controllers
         /// <response code="409">The machine is off and cannot currently start making coffee or already making coffee.</response>
         /// <response code="409">The machine is in alert state and cannot perform any action.</response>
         [HttpPost("make")]
-        public IActionResult StartMakingCoffee([FromBody] MakeCoffeeRequest request)
+        public async Task<ActionResult> StartMakingCoffeeAsync([FromBody] MakeCoffeeRequest request)
         {
             this._logger.LogInformation("Attempting to start making coffee with the machine.");
-
             BaseResponse response = this._coffeeMachineService.MakeCoffeeSafe(request);
+
+            await this._auditService.AddAuditEntryForRequest(this.Request, response,
+                AuditActionType.MakeCoffee).ConfigureAwait(false);
+
             return this.StatusCode(response.Status, response);
         }
 
@@ -100,14 +119,15 @@ namespace netwrix.coffee.api.Controllers
         /// <response code="409">The machine was already started descaling or not ready for descaling.</response>
         /// <response code="409">The machine is off and cannot start descaling.</response>
         [HttpPost("descale")]
-        public IActionResult StartDescalingCoffeeMachine()
+        public async Task<ActionResult> StartDescalingCoffeeMachineAsync()
         {
             this._logger.LogInformation("Attempting to start making coffee with the machine.");
-
             BaseResponse response = this._coffeeMachineService.DescaleCoffeeMachineSafe();
+
+            await this._auditService.AddAuditEntryForRequest(this.Request, response,
+                AuditActionType.DescaleMachine).ConfigureAwait(false);
+
             return this.StatusCode(response.Status, response);
         }
-
-
     }
 }

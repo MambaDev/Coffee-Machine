@@ -48,7 +48,9 @@ namespace netwrix.coffee.api
             // since we don't work with many different machines, we can create a singleton for
             // usage. The sub would be created here or during first execution.
             services.AddSingleton<ICoffeeMachine>(new CoffeeMachineStub());
+
             services.AddScoped<ICoffeeMachineService, CoffeeMachineService>();
+            services.AddScoped<IAuditService, AuditService>();
 
 #pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
             // ensure that the database is created for the sake of the demo
