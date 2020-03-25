@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace netwrix.coffee.api.Models
+namespace netwrix.coffee.shared.Models
 {
     public class DatabaseContext : DbContext
     {
         /// <summary>
-        /// The connection string
+        /// Gets or sets the auditing actions database set.
         /// </summary>
-        private readonly string _connectionString;
+        public DbSet<AuditingActions> AuditingActions { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseContext"/> class.
@@ -43,10 +43,7 @@ namespace netwrix.coffee.api.Models
         /// typically define extension methods on this object that allow you to configure the context.</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!string.IsNullOrWhiteSpace(this._connectionString))
-                optionsBuilder.UseMySql(this._connectionString);
-            else
-                base.OnConfiguring(optionsBuilder);
+            base.OnConfiguring(optionsBuilder);
         }
 
         /// <summary>

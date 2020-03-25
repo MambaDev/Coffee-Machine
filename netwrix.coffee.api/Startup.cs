@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using netwrix.coffee.api.Models;
 using netwrix.coffee.api.Services;
+using netwrix.coffee.shared.Models;
 using netwrix.coffee.shared.Types;
 using Newtonsoft.Json;
 
@@ -49,6 +49,12 @@ namespace netwrix.coffee.api
             // usage. The sub would be created here or during first execution.
             services.AddSingleton<ICoffeeMachine>(new CoffeeMachineStub());
             services.AddScoped<ICoffeeMachineService, CoffeeMachineService>();
+
+#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
+            // ensure that the database is created for the sake of the demo
+            using ServiceProvider serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService<DatabaseContext>().Database.EnsureCreated();
+#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

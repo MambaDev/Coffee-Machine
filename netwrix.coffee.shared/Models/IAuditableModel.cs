@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace netwrix.coffee.api.Models
+namespace netwrix.coffee.shared.Models
 {
     public interface IAuditableModel
     {
