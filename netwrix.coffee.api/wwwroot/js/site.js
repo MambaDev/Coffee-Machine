@@ -49,7 +49,7 @@ async function init() {
   const health = await state.api.infrastructure.health();
   markPageAsOnline(health.data ? health.data.online : false);
 
-  state.machine.status = await state.api.coffee.status();
+  state.machine.status = await state.api.coffee.getStatusOfMachine();
   setupStatusUpdateTimer();
 }
 
