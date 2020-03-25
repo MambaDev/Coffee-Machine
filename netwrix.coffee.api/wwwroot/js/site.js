@@ -9,7 +9,7 @@ const state = {
   },
   timers: {
     statusTimer: null,
-    statusTimerTiming: 3000
+    statusTimerTiming: 30000
   }
 };
 
@@ -47,7 +47,7 @@ async function init() {
   state.api = new Api("/api");
 
   const health = await state.api.infrastructure.health();
-  markPageAsOnline(health.online);
+  markPageAsOnline(health.data ? health.data.online : false);
 
   state.machine.status = await state.api.coffee.status();
   setupStatusUpdateTimer();

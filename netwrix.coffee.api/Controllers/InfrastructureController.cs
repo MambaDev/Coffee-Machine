@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using netwrix.coffee.api.Responses.Infrastructure;
+using netwrix.coffee.shared.Responses.Infrastructure;
 
 namespace netwrix.coffee.api.Controllers
 {

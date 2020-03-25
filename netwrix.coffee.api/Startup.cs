@@ -5,7 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using netwrix.coffee.api.Models;
-using netwrix.coffee.api.Types;
+using netwrix.coffee.api.Services;
+using netwrix.coffee.shared.Types;
 using Newtonsoft.Json;
 
 namespace netwrix.coffee.api
@@ -30,7 +31,7 @@ namespace netwrix.coffee.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<DatabaseConfiguration>(this.Configuration.GetSection("database"));
-            DatabaseConfiguration database = this.Configuration.GetSection("datasbase").Get<DatabaseConfiguration>();
+            DatabaseConfiguration database = this.Configuration.GetSection("database").Get<DatabaseConfiguration>();
 
             services.AddEntityFrameworkMySql().AddDbContextPool<DatabaseContext>(options =>
             {
@@ -47,6 +48,7 @@ namespace netwrix.coffee.api
             // since we don't work with many different machines, we can create a singleton for
             // usage. The sub would be created here or during first execution.
             services.AddSingleton<ICoffeeMachine>(new CoffeeMachineStub());
+            services.AddScoped<ICoffeeMachineService, CoffeeMachineService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

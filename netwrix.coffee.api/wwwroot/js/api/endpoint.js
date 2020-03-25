@@ -34,12 +34,13 @@ export default class Endpoint {
     const { status } = response;
 
     if (response.ok) {
-      const content = await response.json();
-      return { ...content };
+      const data = await response.json();
+      return { headers: response.headers, data, ok: response.ok };
     }
 
     const text = await response.text();
-    const json = text == null || text === "" ? {} : JSON.parse(text);
-    throw new Error(Object.assign({ headers: response.headers, status }, json));
+    const data = text == null || text === "" ? {} : JSON.parse(text);
+
+    return { headers: response.headers, status, ok: response.ok, data };
   }
 }
