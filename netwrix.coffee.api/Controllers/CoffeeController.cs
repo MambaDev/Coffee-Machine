@@ -50,7 +50,7 @@ namespace netwrix.coffee.api.Controllers
         /// </summary>
         /// <response code="200">returns the given coffee machines state before it was turned off</response>
         /// <response code="409">the machine was already turned on while attempting to turn it on.</response>
-        [HttpPost("status/offline")]
+        [HttpDelete("status/online")]
         public async Task<IActionResult> TurnOffCoffeeMachineAsync()
         {
             this._logger.LogInformation("Attempting to turn off the machine safely.");
