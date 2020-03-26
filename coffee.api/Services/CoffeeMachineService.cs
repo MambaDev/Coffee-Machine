@@ -156,7 +156,7 @@ namespace coffee.api.Services
             };
 
             Task.Run(async () => await this._coffeeMachine.MakeCoffeeAsync(coffeeOptions).ConfigureAwait(false));
-            return new MakeCoffeeResponse(20);
+            return new MakeCoffeeResponse(15);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace coffee.api.Services
                 return new CoffeeMachineDescalingErrorResponse("descaling");
 
             Task.Run(async () => await this._coffeeMachine.DescaleAsync().ConfigureAwait(false));
-            return new DescalingCoffeeMachineResponse(40);
+            return new DescalingCoffeeMachineResponse(35);
         }
     }
 }

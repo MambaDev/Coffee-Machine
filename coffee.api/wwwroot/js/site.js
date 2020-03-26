@@ -174,33 +174,6 @@ function updateCoffeeMachineCurrentState(status, making, descaling) {
  * @param {string} status The current overview state of the coffee machine.
  */
 function updateRelatedButtonSate(states) {
-  const buttons = [
-    {
-      button: document.getElementById("button-increase-water"),
-      state: states.water_level_state
-    },
-    {
-      button: document.getElementById("button-empty-water"),
-      state: states.water_tray_state
-    },
-    {
-      button: document.getElementById("button-feed-beans"),
-      state: states.bean_feed_state
-    },
-    {
-      button: document.getElementById("button-empty-waste"),
-      state: states.waste_coffee_state
-    }
-  ];
-
-  for (const button of buttons) {
-    button.button.disabled =
-      button.state.toLowerCase() === "okay" ||
-      !states.is_on ||
-      states.is_making_coffee ||
-      states.is_descaling;
-  }
-
   document.getElementById("button-on-off").disabled =
     states.is_descaling || states.is_making_coffee;
 
