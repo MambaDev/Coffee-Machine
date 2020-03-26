@@ -28,7 +28,6 @@ namespace coffee.shared.Models
 
         public int? Hour(DateTimeOffset? date)
         {
-
             throw new Exception();
         }
 
@@ -45,8 +44,8 @@ namespace coffee.shared.Models
             // Since the core implementation does not support weekDay or hour, we have teo bind a method to
             // the sql function directly on model creation. doing so allows us to perfrom a week day
             // query dirctly on the database instead of loading the entire data locally first.
-            MethodInfo methodInfoWeek = typeof(DatabaseContext).GetRuntimeMethod(nameof(WeekDay), new[] { typeof(DateTimeOffset) });
-            modelBuilder.HasDbFunction(methodInfoWeek, b => b.HasTranslation(e =>
+            MethodInfo methodInfoWeekDay = typeof(DatabaseContext).GetRuntimeMethod(nameof(WeekDay), new[] { typeof(DateTimeOffset) });
+            modelBuilder.HasDbFunction(methodInfoWeekDay, b => b.HasTranslation(e =>
            {
                SqlExpression[] arguments = new[] { e.ElementAt(0) };
                return SqlFunctionExpression.Create(nameof(WeekDay), arguments, typeof(int?), null);

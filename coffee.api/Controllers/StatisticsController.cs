@@ -1,45 +1,14 @@
 ﻿using coffee.shared.Models;
+using coffee.shared.Types;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 
 namespace coffee.api.Controllers
 {
-    public class AuditDayResult
-    {
-        [JsonProperty("min")]
-        public DateTimeOffset Min { get; set; }
-
-        [JsonProperty("max")]
-        public DateTimeOffset Max { get; set; }
-
-        [JsonProperty("average")]
-        public double Average { get; set; }
-
-        [JsonProperty("day")]
-        public DayOfWeek Day => this.Min.DayOfWeek;
-
-        [JsonProperty("hours")]
-        public List<object> Hours { get; set; } = new List<object>();
-    }
-
-    public class AuditHourResult
-    {
-        [JsonProperty("average")]
-        public double Average { get; set; }
-
-        [JsonProperty("hour")]
-        public int Hour => this.DaySample.Hour;
-
-        [JsonIgnore]
-        public DateTimeOffset DaySample { get; set; }
-
-        [JsonIgnore]
-        public int Day => (int)this.DaySample.DayOfWeek;
-    };
-
     [Route("api/[controller]")]
     [ApiController]
     public class StatisticsController : ControllerBase
@@ -68,41 +37,54 @@ namespace coffee.api.Controllers
         /// </para>
         /// </response>
         [HttpGet]
-        public IEnumerable<AuditDayResult> GetCoffeeMachineStatistics()
+        public ActionResult<IEnumerable<AuditCoffeeDay>> GetCoffeeMachineStatistics()
         {
+            // Used in determining the current number of weeks between first and last coffee.
             DateTimeOffset minDay = this._databaseContext.AuditingActions.Min(e => e.CreatedDatetime);
             DateTimeOffset maxDay = this._databaseContext.AuditingActions.Max(e => e.CreatedDatetime);
 
             var weeksPast = Math.Ceiling((maxDay - minDay).TotalDays / 7);
+            var currrentWeekDay = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(DateTime.UtcNow, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
 
-            IQueryable<AuditHourResult> hoursQuery = this._databaseContext.AuditingActions
+            // Gather all the audit events that are related to coffee making and group them by the
+            // hour and day they have taken place on. And determine the average number of coffee's
+            // made on that given hour on that given day based on the total number of weeks that
+            // have passed since the first coffee was made.
+            IQueryable<AuditCoffeeHour> hoursQuery = this._databaseContext.AuditingActions
                 .Where(e => e.Type == AuditActionType.MakeCoffee).GroupBy(e => new
                 {
-                    day = this._databaseContext.WeekDay(e.CreatedDatetime),
-                    hour = this._databaseContext.Hour(e.CreatedDatetime)
+                    Day = this._databaseContext.WeekDay(e.CreatedDatetime),
+                    Hour = this._databaseContext.Hour(e.CreatedDatetime)
                 })
-                .Select(e => new AuditHourResult
+                .Select(e => new AuditCoffeeHour
                 {
                     Average = e.Count() / weeksPast,
-                    DaySample = e.Max(a => a.CreatedDatetime),
+                    Day = (DayOfWeek)e.Key.Day + 1,
+                    Hour = (int)e.Key.Hour
                 });
 
-            IQueryable<AuditDayResult> daysQuery = this._databaseContext.AuditingActions
-                .Where(e => e.Type == AuditActionType.MakeCoffee).GroupBy(e => this._databaseContext.WeekDay(e.CreatedDatetime))
-                .Select(e => new AuditDayResult
+            // Gather all audit events that are related to coffee making and group them by the day
+            // of the week they occured on, determining the days average and the earliest and latest
+            // coffee of that given day of the week.
+            IQueryable<AuditCoffeeDay> daysQuery = this._databaseContext.AuditingActions
+                .Where(e => e.Type == AuditActionType.MakeCoffee)
+                .GroupBy(e => this._databaseContext.WeekDay(e.CreatedDatetime))
+                .Select(e => new AuditCoffeeDay
                 {
                     Max = e.Max(a => a.CreatedDatetime),
                     Min = e.Min(a => a.CreatedDatetime),
                     Average = e.Count() / weeksPast,
+                    Day = (DayOfWeek)e.Key + 1,
                 });
 
             var hourResults = hoursQuery.ToList();
             var dayResults = daysQuery.ToList();
 
-            foreach (AuditHourResult hour in hourResults)
-                dayResults.First(e => e.Max.DayOfWeek == (DayOfWeek)hour.Day).Hours.Add(hour);
+            // bind all the given hours into the related day they occured on. 
+            foreach (AuditCoffeeHour hour in hourResults)
+                dayResults.First(e => e.Day == hour.Day).Hours.Add(hour);
 
-            return dayResults;
+            return this.StatusCode((int)HttpStatusCode.OK, dayResults);
         }
     }
 }
