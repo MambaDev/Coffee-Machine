@@ -21,6 +21,7 @@ namespace Mamba.Cloud.Api.test
             {
                 // remove the existing context configuration, coffee and audit implementation.
                 services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DatabaseContext>)));
+                services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(DatabaseContext)));
                 services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(ICoffeeMachine)));
 
                 // Create a new service provider.
