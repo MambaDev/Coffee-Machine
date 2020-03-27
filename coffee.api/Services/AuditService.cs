@@ -35,7 +35,7 @@ namespace coffee.api.Services
             await this._databaseContext.AuditingActions.AddAsync(new AuditingActions
             {
                 Result = response.Ok() ? AuditActionResult.Passed : AuditActionResult.Failed,
-                Source = request.HttpContext.Connection.RemoteIpAddress.ToString(),
+                Source = request.HttpContext.Connection.RemoteIpAddress?.ToString(),
                 Type = type,
             }).ConfigureAwait(false);
 

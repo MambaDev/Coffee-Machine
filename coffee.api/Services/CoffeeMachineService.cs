@@ -1,9 +1,7 @@
-﻿using coffee.shared.Models;
-using coffee.shared.Requests.Coffee;
+﻿using coffee.shared.Requests.Coffee;
 using coffee.shared.Responses;
 using coffee.shared.Responses.Coffee;
 using coffee.shared.Types;
-using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,16 +48,6 @@ namespace coffee.api.Services
     public class CoffeeMachineService : ICoffeeMachineService
     {
         /// <summary>
-        /// The database context used to record usages.
-        /// </summary>
-        private readonly DatabaseContext _context;
-
-        /// <summary>
-        /// The logger
-        /// </summary>
-        private readonly ILogger<ICoffeeMachineService> _logger;
-
-        /// <summary>
         /// The coffee machine
         /// </summary>
         private readonly ICoffeeMachine _coffeeMachine;
@@ -67,13 +55,9 @@ namespace coffee.api.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="CoffeeMachineService"/> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="context">The context.</param>
         /// <param name="coffeeMachine">The coffee machine.</param>
-        public CoffeeMachineService(ILogger<ICoffeeMachineService> logger, DatabaseContext context, ICoffeeMachine coffeeMachine)
+        public CoffeeMachineService(ICoffeeMachine coffeeMachine)
         {
-            this._logger = logger;
-            this._context = context;
             this._coffeeMachine = coffeeMachine;
         }
 

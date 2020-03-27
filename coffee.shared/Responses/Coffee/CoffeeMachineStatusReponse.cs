@@ -77,6 +77,11 @@ namespace coffee.shared.Responses.Coffee
         /// <summary>
         /// Initializes a new instance of the <see cref="CoffeeMachineStatusResponse"/> class.
         /// </summary>
+        public CoffeeMachineStatusResponse() { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoffeeMachineStatusResponse"/> class.
+        /// </summary>
         /// <param name="coffeeMachine">The coffee machine used to pull the state from.</param>
         public CoffeeMachineStatusResponse(ICoffeeMachine coffeeMachine)
         {

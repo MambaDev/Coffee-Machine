@@ -70,7 +70,7 @@ namespace coffee.shared.Models
         /// </value>
         [Column("created_datetime")]
         [JsonProperty("created_datetime")]
-        public DateTimeOffset CreatedDatetime { get; private set; }
+        public DateTimeOffset CreatedDatetime { get; set; }
 
         /// <summary>
         /// Gets or sets the modified date time.
