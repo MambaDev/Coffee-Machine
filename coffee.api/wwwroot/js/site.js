@@ -50,6 +50,7 @@ async function descaleCoffeeMachine() {
   const refresh = async () => {
     button.disabled = false;
     await getCoffeeMachineStates();
+    await getCoffeeMachineStats();
 
     notifyUser(true, "Coffee machine descaled! ☕");
   };
@@ -81,6 +82,7 @@ async function makeCoffee() {
   const refresh = async () => {
     button.disabled = false;
     await getCoffeeMachineStates();
+    await getCoffeeMachineStats();
 
     notifyUser(true, "Coffee should be ready! ☕");
   };

@@ -103,7 +103,7 @@ namespace coffee.shared.Responses.Coffee
             this.CurrentState = CoffeeStatusState.Idle;
 
             if (this.IsMakingCoffee || this.IsDescaling) this.CurrentState = CoffeeStatusState.Active;
-            if (this.IsAlerting) this.CurrentState = CoffeeStatusState.Alert;
+            else if (this.IsAlerting) this.CurrentState = CoffeeStatusState.Alert;
         }
     }
 }
