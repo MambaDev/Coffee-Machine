@@ -93,7 +93,8 @@ button {
   display: inline-flex;
 }
 
-.state-table {
+.state-table,
+.stats-table {
   margin: 0 auto 25px auto;
 }
 
@@ -108,6 +109,17 @@ button {
 .line {
   margin: 25px;
   border-bottom: 1px solid #e1e1e1;
+}
+
+.day {
+  margin: 10px;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.day-hours {
+  border-top: 0.5px solid #e1e1e1;
+  margin-top: 5px;
+  padding-top: 5px;
 }
 
 input[type="button"]:disabled,
@@ -128,6 +140,27 @@ td {
   font-size: 0.85em;
 }
 
+.states {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+
+  column-gap: 0px;
+  grid-auto-rows: 100px;
+}
+
+.day-hours {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.day-overview {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+}
+
 /* Mobile first queries */
 
 /* Larger than mobile */
@@ -143,11 +176,19 @@ td {
 /* Larger than tablet */
 
 @media (min-width: 750px) {
+  .states {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
 }
 
 /* Larger than desktop */
 
 @media (min-width: 1000px) {
+  .states {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
 }
 
 /* Larger than Desktop HD */
@@ -155,5 +196,10 @@ td {
 @media (min-width: 1200px) {
   h1 {
     font-size: 4rem;
+  }
+
+  .states {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
 }

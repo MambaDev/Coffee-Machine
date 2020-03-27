@@ -1,7 +1,8 @@
 ﻿const state = {
   machine: {
     online: false,
-    status: null
+    status: null,
+    stats: null
   },
   timers: {
     statusTimer: null,
@@ -16,6 +17,7 @@
  */
 function notifyUser(error, message) {
   console.log(error, message);
+  return !error;
 }
 
 /**
@@ -117,6 +119,19 @@ async function turnOnCoffeeMachine() {
 }
 
 /**
+ * Tells the server to get the coffee machines statistics, and render them on
+ * the page. additionally if a error occurs, the user would be notified.
+ */
+async function getCoffeeMachineStats() {
+  const response = await window.api.statistics.getCoffeeMachineStatistics();
+  if (!response.ok) return notifyUser(true, response.data.message);
+
+  state.machine.stats = response.data;
+  updateDisplayingCoffeeMachineStats(state.machine.stats);
+  return true;
+}
+
+/**
  * Tells the server to get the coffee machines states, this will also update the
  * stats and status within the site after the response, additionally if a error
  * occurs, the user would be notified.
@@ -130,6 +145,7 @@ async function getCoffeeMachineStates() {
 
   if (state.machine.status.current_state.toLowerCase() !== "off")
     updateCoffeeMachineStates(state.machine.status);
+  return true;
 }
 
 /**
@@ -170,8 +186,50 @@ function updateCoffeeMachineCurrentState(status, making, descaling) {
 }
 
 /**
+ * Updates the displaying coffee machine making coffee stats on the page.
+ * @param {object} stats The new stats to be drawn.
+ */
+function updateDisplayingCoffeeMachineStats(stats) {
+  const statusElement = document.getElementById("coffee-stats");
+  statusElement.innerHTML = "";
+
+  const template = document.getElementById("day-entry-template").content;
+  const hoursTemplate = document.getElementById("day-hour-entry-template")
+    .content;
+
+  for (const day of stats) {
+    const dayElement = template.cloneNode(true);
+
+    const root = dayElement.querySelector("div");
+    const overview = dayElement.querySelector(".day-overview");
+
+    const min = new Date(day.min).toLocaleString();
+    const max = new Date(day.max).toLocaleString();
+
+    root.children[0].innerText = day.day;
+    overview.children[1].innerText = min;
+    overview.children[3].innerText = max;
+    overview.children[5].innerText = day.average;
+
+    root.removeChild(root.lastChild);
+
+    for (const hour of day.hours) {
+      const hourElement = hoursTemplate.cloneNode(true);
+      const hourRoot = hourElement.querySelector("div");
+
+      hourRoot.children[1].innerText = hour.hour;
+      hourRoot.children[3].innerText = hour.average;
+
+      root.appendChild(hourRoot);
+    }
+
+    statusElement.appendChild(root);
+  }
+}
+
+/**
  * Updates the buttons state based on the coffee machines state.
- * @param {string} status The current overview state of the coffee machine.
+ * @param {object} status The current overview state of the coffee machine.
  */
 function updateRelatedButtonSate(states) {
   document.getElementById("button-on-off").disabled =
@@ -207,10 +265,10 @@ function updateCoffeeMachineStates(states) {
  * required to poll status updates to ensure we are always aware of the current
  * state.
  */
-function setupStatusUpdateTimer() {
+function setupStatusAndStatisticsUpdateTimer() {
   state.timers.statusTimer = setInterval(async () => {
-    state.machine.status = (await window.api.coffee.getStatusOfMachine()).data;
-    updateCoffeeMachineStates(state.machine.status);
+    if (!(await getCoffeeMachineStates())) return;
+    if (!(await getCoffeeMachineStats())) return;
   }, state.timers.statusTimerTiming);
 }
 
@@ -235,11 +293,12 @@ function setupButtonEvents() {
  */
 async function init() {
   await getCoffeeMachineStates();
+  await getCoffeeMachineStats();
 
   if (state.machine.status !== null)
     updateTurnOnOffButtonText(state.machine.status.current_state);
 
-  setupStatusUpdateTimer();
+  setupStatusAndStatisticsUpdateTimer();
   setupButtonEvents();
 }
 

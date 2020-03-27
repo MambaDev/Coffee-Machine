@@ -87,10 +87,35 @@
 
       <div class="line"></div>
 
+      <div class="states" id="coffee-stats"></div>
+
       <footer class="footer">
         <p><a href="http://getskeleton.com/">Skeleton.css</a></p>
       </footer>
     </div>
+
+    <template id="day-entry-template">
+      <div class="day-container">
+        <div class="day">{{day}}</div>
+        <div class="day-overview">
+          <div>first:</div>
+          <div>{{date}}</div>
+          <div>last:</div>
+          <div>{{date}}</div>
+          <div>avg:</div>
+          <div>{{day-average}}</div>
+        </div>
+      </div>
+    </template>
+
+    <template id="day-hour-entry-template">
+      <div class="day-hours">
+        <div>hour:</div>
+        <div>{{hour}}</div>
+        <div>avg:</div>
+        <div>{{hour-average}}</div>
+      </div>
+    </template>
 
     <script src="/js/api/index.js" type="module"></script>
     <script src="/js/site.js"></script>

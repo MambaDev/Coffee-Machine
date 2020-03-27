@@ -17,5 +17,7 @@ namespace coffee.api
                 webBuilder.UseStartup<Startup>().UseUrls("http://0.0.0.0:8080");
             });
         }
+
+        // WILO: when descaling, it should be in active mode and not alert.
     }
 }
