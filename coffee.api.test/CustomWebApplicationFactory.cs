@@ -1,5 +1,4 @@
 ﻿using coffee.api;
-using coffee.api.test;
 using coffee.shared.Models;
 using coffee.shared.Types;
 using Microsoft.AspNetCore.Hosting;
