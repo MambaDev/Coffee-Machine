@@ -14,8 +14,7 @@
 # How to Use
 
 The project requires the installation of the dotnet core 3.1 SDK, ef tools and a MySQL server or variant (MariaDB).
-
-0. If you don't have dotnet-ef, to get this you will need to run `dotnet tool install --global dotnet-ef --version 3.1`.
+If you don't have dotnet-ef, to get this you will need to run `dotnet tool install --global dotnet-ef --version 3.1`.
 
 1. Update the `coffee.api` appsettings and appsettings.development JSON files with a valid `MySQL` related connection details.
 1. Restore related packages `dotnet restore`
