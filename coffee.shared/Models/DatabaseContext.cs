@@ -111,9 +111,6 @@ namespace coffee.shared.Models
             {
                 e.Property(x => x.ModifiedDateTime).CurrentValue = DateTimeOffset.UtcNow;
                 e.Property(x => x.ModifiedDateTime).IsModified = true;
-
-                e.Property(x => x.CreatedDatetime).CurrentValue = e.Property(x => x.CreatedDatetime).OriginalValue;
-                e.Property(x => x.CreatedDatetime).IsModified = false;
             });
 
             return base.SaveChanges();

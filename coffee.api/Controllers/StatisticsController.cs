@@ -59,7 +59,7 @@ namespace coffee.api.Controllers
                 .Select(e => new AuditCoffeeHour
                 {
                     Average = e.Count() / weeksPast,
-                    Day = (DayOfWeek)e.Key.Day + 1,
+                    Day = e.Key.Day == 6 ? DayOfWeek.Sunday : (DayOfWeek)e.Key.Day + 1,
                     Hour = (int)e.Key.Hour
                 });
 
@@ -74,7 +74,7 @@ namespace coffee.api.Controllers
                     Max = e.Max(a => a.CreatedDatetime),
                     Min = e.Min(a => a.CreatedDatetime),
                     Average = e.Count() / weeksPast,
-                    Day = (DayOfWeek)e.Key + 1,
+                    Day = e.Key == 6 ? DayOfWeek.Sunday : (DayOfWeek)e.Key + 1,
                 });
 
             var hourResults = hoursQuery.ToList();

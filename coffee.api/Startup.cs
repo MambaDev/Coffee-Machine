@@ -1,4 +1,5 @@
 using coffee.api.Services;
+using coffee.api.test;
 using coffee.shared.Models;
 using coffee.shared.Types;
 using Microsoft.AspNetCore.Builder;
@@ -55,7 +56,11 @@ namespace coffee.api
 #pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
             // ensure that the database is created for the sake of the demo
             using ServiceProvider serviceProvider = services.BuildServiceProvider();
-            serviceProvider.GetService<DatabaseContext>().Database.EnsureCreated();
+
+            DatabaseContext databaseContext = serviceProvider.GetService<DatabaseContext>();
+
+            databaseContext.Database.EnsureCreated();
+            SeedData.PopulateTestData(databaseContext);
 #pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
         }
 

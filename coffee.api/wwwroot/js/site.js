@@ -16,7 +16,7 @@
  * @param {string} message The message to be shown.
  */
 function notifyUser(error, message) {
-  console.log(error, message);
+  showSnack(error, message);
   return !error;
 }
 
@@ -52,7 +52,7 @@ async function descaleCoffeeMachine() {
     await getCoffeeMachineStates();
     await getCoffeeMachineStats();
 
-    notifyUser(true, "Coffee machine descaled! ☕");
+    notifyUser(false, "Coffee machine descaled! ☕");
   };
 
   setTimeout(refresh, response.data.seconds_until_completion * 1000);
@@ -84,7 +84,7 @@ async function makeCoffee() {
     await getCoffeeMachineStates();
     await getCoffeeMachineStats();
 
-    notifyUser(true, "Coffee should be ready! ☕");
+    notifyUser(false, "Coffee should be ready! ☕");
   };
 
   setTimeout(refresh, response.data.seconds_until_completion * 1000);
@@ -185,6 +185,9 @@ function updateCoffeeMachineCurrentState(status, making, descaling) {
     statusElement.classList.add("online");
     statusElement.classList.remove("offline");
   }
+
+  if (status.toLowerCase() === "alert")
+    notifyUser(true, " ☕ Coffee Machine is in alert state!");
 }
 
 /**
@@ -211,7 +214,7 @@ function updateDisplayingCoffeeMachineStats(stats) {
     root.children[0].innerText = day.day;
     overview.children[1].innerText = min;
     overview.children[3].innerText = max;
-    overview.children[5].innerText = day.average;
+    overview.children[5].innerText = Number(day.average).toFixed(2);
 
     root.removeChild(root.lastChild);
 
@@ -220,7 +223,7 @@ function updateDisplayingCoffeeMachineStats(stats) {
       const hourRoot = hourElement.querySelector("div");
 
       hourRoot.children[1].innerText = hour.hour;
-      hourRoot.children[3].innerText = hour.average;
+      hourRoot.children[3].innerText = Number(hour.average).toFixed(2);
 
       root.appendChild(hourRoot);
     }
