@@ -19,10 +19,6 @@ a {
   transition: 0.5s;
 }
 
-a:hover {
-  color: var(--coffee);
-}
-
 h1 {
   color: var(--coffee);
   padding-bottom: 0px;
@@ -53,14 +49,6 @@ td {
   color: green;
 }
 
-.center {
-  margin: 0 auto;
-}
-
-.buffer {
-  margin-top: 25px;
-}
-
 .logo {
   font-size: 3rem;
   font-weight: bold;
@@ -74,13 +62,6 @@ td {
 .footer p {
   color: white;
   font-size: 1.2rem;
-}
-
-span.new {
-  background-color: var(--coffee);
-  font-weight: 700;
-  padding: 0.2rem;
-  margin-left: 0.4rem;
 }
 
 button {
@@ -167,28 +148,12 @@ td {
   row-gap: 25px;
 }
 
-/* Mobile first queries */
-
-/* Larger than mobile */
-
-@media (min-width: 400px) {
-}
-
-/* Larger than phablet */
-
-@media (min-width: 550px) {
-}
-
-/* Larger than tablet */
-
 @media (min-width: 700px) {
   .states {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(4, 1fr);
   }
 }
-
-/* Larger than desktop */
 
 @media (min-width: 1000px) {
   .states {
