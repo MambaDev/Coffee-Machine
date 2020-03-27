@@ -58,7 +58,7 @@ namespace coffee.shared.Models
                return SqlFunctionExpression.Create(nameof(Hour), arguments, typeof(int?), null);
            }));
 
-            base.OnModelCreating(modelBuilder);
+            SeedData.PopulateTestData(modelBuilder);
         }
 
         /// <summary>

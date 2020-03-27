@@ -17,11 +17,12 @@ namespace Mamba.Cloud.Api.test
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            builder.UseEnvironment("IntegrationTests");
+
             builder.ConfigureTestServices(services =>
             {
                 // remove the existing context configuration, coffee and audit implementation.
                 services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DatabaseContext>)));
-                services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(DatabaseContext)));
                 services.Remove(services.SingleOrDefault(d => d.ServiceType == typeof(ICoffeeMachine)));
 
                 // Create a new service provider.
@@ -46,21 +47,12 @@ namespace Mamba.Cloud.Api.test
                 using IServiceScope scope = sp.CreateScope();
 
                 IServiceProvider scopedServices = scope.ServiceProvider;
-                DatabaseContext appDb = scopedServices.GetRequiredService<DatabaseContext>();
+                DatabaseContext databaseContext = scopedServices.GetRequiredService<DatabaseContext>();
 
                 ILogger<CustomWebApplicationFactory<TStartup>> logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
 
                 // Ensure the database is created.
-                appDb.Database.EnsureCreated();
-
-                try
-                {
-                    SeedData.PopulateTestData(appDb);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "An error occurred seeding the database with test messages. Error: {ex.Message}");
-                }
+                databaseContext.Database.EnsureCreated();
             });
         }
     }

@@ -13,14 +13,15 @@
 
 # How to Use
 
-The project requires the installation of the dotnet core 3.1 SDK and a MySQL server or variant (MariaDB).
+The project requires the installation of the dotnet core 3.1 SDK, ef tools and a MySQL server or variant (MariaDB).
+
+0. If you don't have dotnet-ef, to get this you will need to run `dotnet tool install --global dotnet-ef --version 3.1`.
 
 1. Update the `coffee.api` appsettings and appsettings.development JSON files with a valid `MySQL` related connection details.
-2. Restore related packages `dotnet restore`
-3. Execute tests to ensure correct installation and restore `dotnet test`
-4. Run the application `dotnet run --project coffee.api` and go to `localhost:8080`
-
-When the application first starts, the database will be seeded with sample data.
+1. Restore related packages `dotnet restore`
+1. Execute tests to ensure correct installation and restore `dotnet test`
+1. Run the database migrations setup and seed the actual database: `dotnet ef database update --project coffee.api`
+1. Run the application `dotnet run --project coffee.api` and go to `localhost:8080`
 
 ### Notes
 

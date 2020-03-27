@@ -1,5 +1,4 @@
 using coffee.api.Services;
-using coffee.api.test;
 using coffee.shared.Models;
 using coffee.shared.Types;
 using Microsoft.AspNetCore.Builder;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace coffee.api
 {
@@ -34,10 +34,13 @@ namespace coffee.api
             services.Configure<DatabaseConfiguration>(this.Configuration.GetSection("database"));
             DatabaseConfiguration database = this.Configuration.GetSection("database").Get<DatabaseConfiguration>();
 
-            services.AddEntityFrameworkMySql().AddDbContextPool<DatabaseContext>(options =>
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            services.AddEntityFrameworkMySql().AddDbContext<DatabaseContext>(options =>
             {
-                options.UseMySql(database.ConnectionString);
+                options.UseMySql(database.ConnectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 options.EnableSensitiveDataLogging(false);
+
             });
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -52,16 +55,6 @@ namespace coffee.api
 
             services.AddScoped<ICoffeeMachineService, CoffeeMachineService>();
             services.AddScoped<IAuditService, AuditService>();
-
-#pragma warning disable ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
-            // ensure that the database is created for the sake of the demo
-            using ServiceProvider serviceProvider = services.BuildServiceProvider();
-
-            DatabaseContext databaseContext = serviceProvider.GetService<DatabaseContext>();
-
-            databaseContext.Database.EnsureCreated();
-            SeedData.PopulateTestData(databaseContext);
-#pragma warning restore ASP0000 // Do not call 'IServiceCollection.BuildServiceProvider' in 'ConfigureServices'
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
