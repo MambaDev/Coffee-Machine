@@ -49,6 +49,11 @@ td {
   color: green;
 }
 
+.header {
+  font-weight: bold;
+  color: var(--coffee);
+}
+
 .logo {
   font-size: 3rem;
   font-weight: bold;
