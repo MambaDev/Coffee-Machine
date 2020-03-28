@@ -128,7 +128,7 @@ async function getCoffeeMachineStats() {
   const response = await window.api.statistics.getCoffeeMachineStatistics();
   if (!response.ok) return notifyUser(true, response.data.message);
 
-  state.machine.stats = response.data;
+  state.machine.stats = response.data.make_coffee_days;
   updateDisplayingCoffeeMachineStats(state.machine.stats);
   return true;
 }

@@ -1,8 +1,8 @@
 ﻿using coffee.shared.Models;
+using coffee.shared.Requests.Statistics;
 using coffee.shared.Types;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -37,7 +37,7 @@ namespace coffee.api.Controllers
         /// </para>
         /// </response>
         [HttpGet]
-        public ActionResult<IEnumerable<AuditCoffeeDay>> GetCoffeeMachineStatistics()
+        public ActionResult<GetMakeCoffeeMachineStatisticsResponse> GetCoffeeMachineStatistics()
         {
             // Used in determining the current number of weeks between first and last coffee.
             DateTimeOffset minDay = this._databaseContext.AuditingActions.Min(e => e.CreatedDatetime);
@@ -77,14 +77,17 @@ namespace coffee.api.Controllers
                     Day = e.Key == 6 ? DayOfWeek.Sunday : (DayOfWeek)e.Key + 1,
                 });
 
-            var hourResults = hoursQuery.ToList();
-            var dayResults = daysQuery.ToList();
+            var makeCoffeeHourAudits = hoursQuery.ToList();
+            var makeCoffeeDayAudits = daysQuery.ToList();
 
             // bind all the given hours into the related day they occured on. 
-            foreach (AuditCoffeeHour hour in hourResults)
-                dayResults.First(e => e.Day == hour.Day).Hours.Add(hour);
+            foreach (AuditCoffeeHour hour in makeCoffeeHourAudits)
+                makeCoffeeDayAudits.First(e => e.Day == hour.Day).Hours.Add(hour);
 
-            return this.StatusCode((int)HttpStatusCode.OK, dayResults);
+            return this.StatusCode((int)HttpStatusCode.OK, new GetMakeCoffeeMachineStatisticsResponse
+            {
+                MakeCoffeeDays = makeCoffeeDayAudits
+            });
         }
     }
 }
