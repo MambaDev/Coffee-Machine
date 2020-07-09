@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "coffee.api", "coffee.api\co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "coffee.shared", "coffee.shared\coffee.shared.csproj", "{DF95196C-A146-47F5-A323-292BB1B1D24F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "coffee.api.test", "coffee.api.test\coffee.api.test.csproj", "{4A9646EC-3560-43E2-AA22-D88951899306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "coffee.api.test", "coffee.api.test\coffee.api.test.csproj", "{4A9646EC-3560-43E2-AA22-D88951899306}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FAFD1E4-AEDF-422D-8FE8-3E9C88EE889B}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
